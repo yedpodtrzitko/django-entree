@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block content %}
+	{% if site %}
+		<h2>{% trans "Your profile for site" %} {{ site.title }}</h2>
+	{% endif %}
+	{% if not is_active %}
+		<ul id="verify_notice" class="unstyled">
+			<li class="alert alert-error">
+				<span class="status">X</span> {% trans "Profile activated" %} *
+			</li>
+			<li class="alert alert-info">
+				{% with site.title as site_title %}
+					* {% blocktrans %}
+					Before first logging to site {{ site_title }}, your profile have to be activated by filling the form below.
+				{% endblocktrans %}
+				{% endwith %}
+			</li>
+		</ul>
+	{% endif %}
+	<form action="." method="post">
+		{% csrf_token %}
+		{{ form }}
+		<input class="btn" type="submit" value="{% trans "Save" %}"/>
+	</form>
+
+{% endblock %}

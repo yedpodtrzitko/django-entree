@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% load url from future %}
+{% load i18n %}
+
+{% block content %}
+	<h1>
+		{% trans "You have created accounts for following sites" %}:
+	</h1>
+	<div id="profile-list">
+		{% for one in sites %}
+			<div class="siteprofile row">
+				<h2>
+					<a href="{{ one.url }}">{{ one.title }}</a>
+				</h2>
+
+				{% if one.pk not in active_profiles %}
+					<a class="btn btn-inverse btn-large" href="{% url "profile_edit" one.pk %}">
+						{% trans "Activate profile" %}
+					</a>
+					<span class="label label-inverse">
+						{% trans "Inactive profile" %} *
+					</span>
+				{% else %}
+					<a class="btn btn-large" href="{% url "profile_edit" one.pk %}">
+						Edit my profile
+					</a>
+				{% endif %}
+			</div>
+		{% endfor %}
+	</div>
+	<div class="footnotes">
+		<h3>{% trans "Notes" %}</h3>
+		<span class="label label-inverse">{% trans "Inactive profile" %}</span>
+		{% blocktrans %}Inactive profile is default state of each profile. Profile in this state cannot be used to login
+			on given site. Can be activated by filling &amp; submitting profile form.{% endblocktrans %}
+	</div>
+
+{% endblock %}

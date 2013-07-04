@@ -1,0 +1,19 @@
+<html>
+<head>
+	<script type="text/javascript" src="{{ entree.URL_SERVER }}{{ entree.ROUTE.JS_LIB }}"></script>
+	<script type="text/javascript">
+		(function () {
+			var entree = new EntreeServer({
+				WHITELIST: ['{{ domains_whitelist|join:"','" }}'],
+				COOKIE_ANONYMOUS_VALUE: "{{ entree.COOKIE.ANONYMOUS_VALUE }}",
+				STORAGE_KEY: "{{ entree.STORAGE_TOKEN_KEY }}"
+			});
+			entree.init();
+		})();
+		document.write(localStorage.getItem('{{ entree.STORAGE_TOKEN_KEY }}'))
+	</script>
+</head>
+<body>
+nyan nyan
+</body>
+</html>

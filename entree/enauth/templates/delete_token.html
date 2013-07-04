@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block extra_head %}
+	<script type="text/javascript">
+		(function () {
+			if (typeof(localStorage) == 'undefined') {
+				return;
+			}
+			var token = localStorage.getItem('{{ entree.STORAGE_TOKEN_KEY }}');
+			if (token == "{{ input_token }}") {
+				localStorage.removeItem('{{ entree.STORAGE_TOKEN_KEY }}');
+			}
+
+			document.location.href = '{{ next_url }}';
+
+		})();
+	</script>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% load url from future %}
+{% load i18n %}
+
+{% block extra_head %}
+	{{ block.super }}
+	<script type="text/javascript">
+		$(function () {
+			$("#ajaxResend").click(function () {
+				$.ajax({
+					url: $(this).attr('href'),
+					success: function (data) {
+						if (data.send_status) {
+							var msg = '{% trans "E-mail successfully sent :)" %}';
+						} else {
+							var msg = "{% trans "We're unable to send verification e-mail, try it later :(" %}";
+						}
+
+						$("#sendStatus").text(msg).fadeOut(3000, function () {
+							$(this).text("").show();
+						});
+					}
+				});
+				return false;
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block content %}
+
+	<div id="verify_notice">
+		<h1>{% trans "Account status" %}</h1>
+
+		<ul class="unstyled">
+			{% if entree_user.is_authenticated %}
+				<li class="alert alert-success">
+					<span class="status">&#x2713;</span> {% trans "Account created" %}
+				</li>
+			{% else %}
+				<li class="alert alert-error">
+					<span class="status">X</span> {% trans "Account created" %}
+				</li>
+			{% endif %}
+
+
+			{% if entree_user.mail_verified %}
+				<li class="alert alert-success">
+					<span class="status">&#x2713;</span> {% trans "E-mail verified" %}
+				</li>
+			{% else %}
+				<li class="alert alert-error">
+					<span class="status">X</span> {% trans "E-mail verified" %} *
+				</li>
+
+
+				<li class="alert alert-info">
+					* {% blocktrans %}We sent you an email to verify your address, check your mailbox, click on link you found in there and your account will be fully activated.{% endblocktrans %}
+
+					<div class="center">
+						<a class="btn btn-large" id="ajaxResend" href="{% url "verify_resend" %}">
+							{% trans "I didn't get any e-mail. Send it again, please :(" %}
+						</a>
+					</div>
+
+					{# do not modify elements' id below, javascript count on it #}
+					<div id="sendStatus"></div>
+				</li>
+			{% endif %}
+
+
+			{% comment %}
+                do not display too much informations at once, BFU could be confused - inactive email is just enough
+            {% endcomment %}
+			{% if entree_user.is_active %}
+				<li class="alert alert-success">
+					<span class="status">&#x2713;</span> {% trans "Account activated" %}
+				</li>
+			{% endif %}
+			{% if entree_user.mail_verified and not entree_user.is_active %}
+				<li class="alert alert-error">
+					<span class="status">X</span> {% trans "Account activated" %} *
+				</li>
+
+				<li class="alert alert-info">
+					{% blocktrans %}
+						Account is activated in the same moment, when you verify email.
+						If you already verified your email but account is still inactive, it was probably deactivated manually by administrator.
+						In this case contact administrator to resolve this situation.
+					{% endblocktrans %}
+				</li>
+			{% endif %}
+		</ul>
+	</div>
+{% endblock %}

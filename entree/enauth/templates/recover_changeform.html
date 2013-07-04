@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block extra_head %}
+	{{ block.super }}
+	<script type="text/javascript">
+		$(function () {
+			var pwd1 = $("#id_password");
+			var pwd2 = $("#id_password2");
+
+			function check_match(self, other) {
+				if (self.val() != other.val()) {
+					self.closest(".control-group").addClass("error");
+					other.closest(".control-group").addClass("error");
+				} else {
+					self.closest(".control-group").removeClass("error");
+					other.closest(".control-group").removeClass("error");
+				}
+			}
+
+			pwd1.keyup(function () {
+				check_match(pwd1, pwd2);
+			});
+
+			pwd2.keyup(function () {
+				check_match(pwd2, pwd1);
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block content %}
+
+	<h1>{% trans "Choose your new password" %}</h1>
+
+	<form action="." method="post">
+		{% csrf_token %}
+		{{ form }}
+		<input type="submit" value="{% trans "Change password" %}"/>
+	</form>
+
+{% endblock %}

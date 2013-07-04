@@ -1,0 +1,6 @@
+south==0.7.6
+simplejson
+django==1.5.1
+git+https://bitbucket.org/creatiweb/django-cache-tools#egg=django-cache-tools
+django-appdata==0.1.3
+django-redis-sessions

@@ -1,0 +1,19 @@
+{% load i18n %}
+
+{% trans "This email is automatically generated, don't respond it." %}
+
+{% blocktrans %}
+Someone requested a password-reset for this email address.
+
+If you really want to reset password, please follow a link below.
+Otherwise you can just ignore this email.
+
+{% endblocktrans %}
+
+{% trans "Link to reset password" %}:
+{{ reset_link }}
+
+{% blocktrans %}
+Regards,
+Entree login system
+{% endblocktrans %}

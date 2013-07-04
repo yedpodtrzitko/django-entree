@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block extra_head %}
+	<script type="text/javascript">
+		(function () {
+			if (typeof(localStorage) != 'undefined') {
+				localStorage.removeItem('{{ entree.STORAGE_TOKEN_KEY }}');
+				localStorage.setItem('{{ entree.STORAGE_TOKEN_KEY }}', '{{ user_token }}')
+			}
+
+			document.location.href = '{{ next_url }}';
+		})();
+	</script>
+{% endblock %}
+
+{% block content %}
+	<span>{% trans "You're being redirected to origin site" %}</span>
+	<a href="{{ next_url }}">Click here if nothing happens</a>
+{% endblock %}

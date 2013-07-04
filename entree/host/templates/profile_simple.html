@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% load url from future %}
+{% load i18n %}
+
+{% block content %}
+	<h1>
+		{% trans "You have created accounts for following sites" %}:
+	</h1>
+	<div id="profile-list">
+		{% for one in sites %}
+			<div class="siteprofile row">
+				<h2>
+					<a href="{{ one.url }}">{{ one.title }}</a>
+				</h2>
+			</div>
+		{% endfor %}
+	</div>
+{% endblock %}

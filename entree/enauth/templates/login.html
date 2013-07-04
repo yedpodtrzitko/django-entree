@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% load url from future %}
+{% load i18n %}
+
+{% block extra_head %}
+	<script type="text/javascript" src="{{ STATIC_URL }}js/entree.js"></script>
+	<script type="text/javascript">
+		(function () {
+			if (typeof(localStorage) == 'undefined') {
+				return;
+			}
+			var token = localStorage.getItem('{{ entree.STORAGE_TOKEN_KEY }}');
+			if (token) {
+				location.href = '{% url "login-recovery" origin_site.pk %}?token=' + token;
+			}
+
+		})();
+	</script>
+{% endblock %}
+
+{% block content %}
+	<h1>{% trans "Login" %}: {{ origin_site.title }}</h1>
+	<br/>
+	<form id="sso_login_form" action="." method="post">
+		{% csrf_token %}
+		{{ form }}
+		<input type="submit" value="{% trans "Login" %}"/>
+	</form>
+
+	<a href="{% url "register" origin_site.pk %}">{% trans "Register a new account" %}</a> |
+
+	<a href="{% url "password_recovery" %}">{% trans "Recover my password" %}</a>
+{% endblock %}

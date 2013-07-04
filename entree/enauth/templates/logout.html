@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block extra_head %}
+	<script type="text/javascript">
+		$(function () {
+			$("#sso_logout_form").submit(function () {
+				if (typeof(localStorage) != 'undefined') {
+					localStorage.removeItem('{{ entree.STORAGE_TOKEN_KEY }}');
+				}
+				return true;
+			});
+		});
+	</script>
+{% endblock %}
+
+
+{% block content %}
+	<h1>{% trans "Do you really want to logout?" %}</h1>
+	<form id="sso_logout_form" action="." method="post">
+		{% csrf_token %}
+		{{ form }}
+		<input class="btn btn-large btn-danger" type="submit" value="{% trans "Yes, log me out." %}">
+	</form>
+
+	<div class="footnotes">
+	<h3>{% trans "Why do I need to confirm my logout?" %}</h3>
+	{% trans "We try to keep you as much safe as possible before evil hackers, it's for your own good." %}
+	</div>
+{% endblock %}
